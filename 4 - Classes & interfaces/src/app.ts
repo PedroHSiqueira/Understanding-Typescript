@@ -24,6 +24,9 @@ class Departament {
   }
 }
 
+//inheritance
+//uso da palavra reservada extensds, cria uma extenção da classe principal  
+
 class ITDepartment extends Departament {
   admins: string[]
   constructor (id: string, admins: string[]) {
@@ -33,8 +36,27 @@ class ITDepartment extends Departament {
 }
 
 class Accounting extends Departament {
+  private _lastReport:string
+
+  //Getter
+  get lastReport(){
+    if(this._lastReport){
+      return this._lastReport
+    }
+    throw new Error("No report Found ...")
+  }
+
+  //Setter
+  set lastReport(value: string){
+    if(!value){
+      throw new Error("Need a valid value!")
+    }
+    this.addReport(value)
+  }
+
   constructor( id: string, private reports: string[]){
     super(id, "Accounting")
+    this._lastReport = reports[0]
   }
 
   addEmployee(name: string){
@@ -47,6 +69,7 @@ class Accounting extends Departament {
 
   addReport(text:string){
     this.reports.push(text)
+    this._lastReport = text
   }
 
   printReports(){
@@ -67,13 +90,17 @@ it.printEmployeeInfo()
 
 const accounting = new Accounting("2", [])
 
-accounting.addReport("Um erro foi detectado ...")
+//Mandando um Setter
 
-// accounting.printReports()
+accounting.lastReport = "Last Report"
+
+accounting.addReport("Error Found...")
+
+console.log(accounting.lastReport);
+
+accounting.printReports()
 
 accounting.addEmployee("Pedro")
 accounting.addEmployee("Henrique")
 
 accounting.printEmployeeInfo()
-
-
