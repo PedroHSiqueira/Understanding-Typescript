@@ -1,18 +1,18 @@
 // class sintax
-
-class Departament {
+abstract class Department {
   //Similar ao private mas extended class podem acessar tambêm 
   protected employees: string[] = []
 
-  constructor(private readonly id: string,public name: string){
+  constructor(protected readonly id: string, public name: string){
     this.name = name;
     this.id = id
   }
 
-  describe() {
-    console.log(`Department (${this.id}) : ${this.name}`);
-    
+  static createEmployee(name: string) {
+    return { name: name}
   }
+
+  abstract describe(this: Department): void;
 
   addEmployee(employee: string){
     this.employees.push(employee)
@@ -27,16 +27,21 @@ class Departament {
 //inheritance
 //uso da palavra reservada extensds, cria uma extenção da classe principal  
 
-class ITDepartment extends Departament {
-  admins: string[]
-  constructor (id: string, admins: string[]) {
+class ITDepartment extends Department {
+  admins: string[];
+  constructor(id: string, admins: string[]) {
     super(id, 'IT');
-    this.admins = admins
+    this.admins = admins;
+  }
+
+  describe() {
+    console.log('IT Department - ID: ' + this.id);
   }
 }
 
-class Accounting extends Departament {
+class Accounting extends Department {
   private _lastReport:string
+  private static instance: Accounting
 
   //Getter
   get lastReport(){
@@ -54,9 +59,23 @@ class Accounting extends Departament {
     this.addReport(value)
   }
 
-  constructor( id: string, private reports: string[]){
+  private constructor( id: string, private reports: string[]){
     super(id, "Accounting")
     this._lastReport = reports[0]
+  }
+
+  static getInstance(){
+    if(Accounting.instance){
+      return this.instance
+    }
+
+    this.instance = new Accounting("D2", [])
+    return this.instance
+  }
+
+  describe(){
+    console.log('Accounting Departmente - ID:' + this.id);
+    
   }
 
   addEmployee(name: string){
@@ -78,6 +97,10 @@ class Accounting extends Departament {
   }
 }
 
+const employee1 = Department.createEmployee('Pedro')
+console.log(employee1);
+
+
 const it = new ITDepartment("1", ["Pedro"])
 
 it.addEmployee("Pedro")
@@ -88,7 +111,9 @@ it.printEmployeeInfo()
 
 // console.log(it);
 
-const accounting = new Accounting("2", [])
+// const accounting = new Accounting("2", [])
+
+const accounting = Accounting.getInstance()
 
 //Mandando um Setter
 
@@ -102,5 +127,6 @@ accounting.printReports()
 
 accounting.addEmployee("Pedro")
 accounting.addEmployee("Henrique")
+accounting.describe()
 
-accounting.printEmployeeInfo()
+// accounting.printEmployeeInfo()
