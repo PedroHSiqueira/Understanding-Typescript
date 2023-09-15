@@ -1,24 +1,46 @@
-interface Greetable {
-  name: string;
+//inetreface como um tipo Function
 
+interface addFn {
+  (a: number, b: number): number
+}
+
+let add:addFn
+
+add = (n1: number, n2: number) => {
+  return n1 + n2
+}
+
+interface Named {
+  readonly name?: string;
+  outputName?: string
+}
+
+interface Greetable extends Named {
   greet(phrase: string): void;
 }
 
 //Usando a interface junto a Classe
 class Person implements Greetable {
-  name: string;
+  name?: string;
   age: number = 18;
 
-  constructor(n: string) {
-    this.name = n;
+  constructor(n?: string) {
+    if(n){
+      this.name = n
+    }
   }
 
   greet(phrase: string): void {
-    console.log(phrase + " " + this.name);
+    if(this.name){
+      console.log(phrase + " " + this.name);
+    }else{
+      console.log("HI!")
+    }
   }
 }
 
-let user1: Person; // ou Greetable
+let user1: Greetable;
+user1 = new Person()
 
-user1 = new Person("Pedro")
+
 user1.greet("Hello there - I am");
