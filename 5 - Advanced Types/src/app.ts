@@ -1,15 +1,15 @@
-type admin = {
+type Admin = {
   name: string,
   privileges: string[]
 }
 
-type employee = {
+type Employee = {
   name: string,
   startDate: Date
 }
 
 // Para objetos, ele ira unir os types em questão
-type advancedEmployee = admin & employee
+type advancedEmployee = Admin & Employee
 
 const e1: advancedEmployee ={
   name: "Pedro",
@@ -22,3 +22,67 @@ type combinable = string | number
 type numeric = number | boolean
 
 type universal = combinable & numeric
+
+// ------------------------------------------------------------------
+
+function add(a: number | string, b: number | string){
+  if(typeof a === "string" || typeof b === "string"){
+    return a.toString() + b.toString()
+  }
+
+  return a + b
+}
+
+// Type Guards 
+
+type UnknownEmployee = Employee | Admin
+
+function printEmployeeInformation(emp: UnknownEmployee){
+  console.log("Name: " + emp.name);
+  
+  //Uso do IN
+  if("privileges" in emp){
+    console.log("Privileges: " + emp.privileges);
+  }
+  
+  if("startDate" in emp){
+    console.log("Start Date: " + emp.startDate);
+  }
+}
+
+printEmployeeInformation(e1)
+
+// uso do Instance OF
+
+class Car {
+  drive(){
+    console.log("Driving ...");
+    
+  }
+}
+
+class Truck {
+  drive(){
+    console.log("Driving a truck ...");
+    
+  }
+
+  loadCargo(amount: number){
+    console.log("Loading a cargo ... " + amount);   
+  }
+}
+
+type vehicle = Car | Truck
+
+const v1 = new Car()
+const v2 = new Truck()
+
+function useVehicle(vehicle: vehicle){
+  vehicle.drive()
+  if(vehicle instanceof Truck){
+    vehicle.loadCargo(1000)
+  }
+}
+
+useVehicle(v1)
+useVehicle(v2)
