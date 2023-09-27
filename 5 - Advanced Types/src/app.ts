@@ -50,6 +50,13 @@ const fetchedUserData = {
 
 console.log(fetchedUserData?.job?.title);
 
+//Nullish Coalescing
+
+const userInput = ''
+
+const storedData = userInput ?? "DEFAULT"
+
+console.log(storedData);
 
 // Type Guards 
 
