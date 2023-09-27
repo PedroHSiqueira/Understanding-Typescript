@@ -40,6 +40,17 @@ function add(a: combinable, b: combinable){
 const result = add("Pedro", " Henrique")
 result.split(" ")
 
+//Optional Chaining
+
+const fetchedUserData = {
+  id: "u1",
+  name: "Pedro",
+  job: {title: "CEO", description: "My own company"}
+}
+
+console.log(fetchedUserData?.job?.title);
+
+
 // Type Guards 
 
 type UnknownEmployee = Employee | Admin
