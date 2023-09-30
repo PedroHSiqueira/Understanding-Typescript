@@ -16,3 +16,27 @@ function merge<T extends Object, U extends Object> (objA: T, objB: U){
 
 const mergedObj = merge({ name: 'Max', hobbies:["sports"] }, { age: 30 })
 console.log(mergedObj.age);
+
+interface Lengthy {
+  length: number
+}
+
+function countAndDesacribe<T extends Lengthy>(element: T): [T, string] {
+  let descriptionText = 'Got no value'
+  if(element.length === 1){
+    descriptionText = 'Got 1 element'
+  } else if (element.length > 1){
+    descriptionText = 'Got ' + element.length + ' elements'
+  }
+  return [element, descriptionText]
+}
+
+console.log(countAndDesacribe('Hi there!'));
+
+// keyof
+
+function extractAndConvert<T extends object, U extends keyof T>(obj: T, key: U){
+  return 'Value: ' + obj[key]
+}
+
+extractAndConvert({ nome: 'Max' }, 'nome')
