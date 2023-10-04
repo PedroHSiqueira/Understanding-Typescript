@@ -14,6 +14,8 @@ function WithTemplate(template: string, hookId: string){
   }
 }
 
+//Order Bottom to Top
+@Logger("Logging")
 @WithTemplate("<h1> My First Object </h1>", "app")
 class Person {
   name =  "Pedro";
