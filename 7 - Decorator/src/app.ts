@@ -6,7 +6,9 @@ function Logger(logSting: string) {
 }
 
 function WithTemplate(template: string, hookId: string) {
-  return function <T extends {new(...args: any[]): {name:string} }>(originalConstructor: T) {
+  return function <T extends { new (...args: any[]): { name: string } }>(
+    originalConstructor: T
+  ) {
     return class extends originalConstructor {
       constructor(..._: any[]) {
         super();
@@ -91,3 +93,33 @@ class Product {
     return this._price * (1 + tax);
   }
 }
+
+//autobind Decorator
+
+function AutoBind(_: any, _2: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value;
+  const adjDescriptor: PropertyDescriptor = {
+    configurable: false,
+    enumerable: false,
+    get() {
+      const boundFn = originalMethod.bind(this);
+      return boundFn;
+    },
+  };
+  return adjDescriptor;
+}
+
+class Printer {
+  message: string = "This Work!";
+
+  @AutoBind
+  showMessage() {
+    console.log(this.message);
+  }
+}
+
+const p = new Printer();
+
+const button = document.querySelector("button")!;
+
+button.addEventListener("click", p.showMessage);
