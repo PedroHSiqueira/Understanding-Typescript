@@ -1,13 +1,16 @@
-import express, {Request, Response, NextFunction} from "express"
+import express, { Request, Response, NextFunction } from 'express';
+import { json } from 'body-parser';
 
-import TodoRoutes from "./routes/todos"
+import todoRoutes from './routes/todos';
 
-const app = express()
+const app = express();
 
-app.use("/todos", TodoRoutes)
+app.use(json());
+
+app.use('/todos', todoRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  res.status(500).json({message: err.message})
-})
+  res.status(500).json({ message: err.message });
+});
 
-app.listen(3000)
+app.listen(3000);
